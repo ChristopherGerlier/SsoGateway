@@ -1,0 +1,6 @@
+{
+    // Configuration cascading 
+    "rules": {
+        "max-len" : "off"
+    }
+}

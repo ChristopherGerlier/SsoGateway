@@ -1,0 +1,42 @@
+@import "../../../../public/styles/colors.scss";
+
+.front-bg {
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  left: -10%;
+  background-image: url(../../../../public/images/background.jpg);
+}
+
+.login-form {
+  color: white;
+  margin: 0;
+  position: absolute;
+  width:700px;
+  top: 20%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  h2 {
+    margin-top:0px;
+  }
+  input {
+    height: 42px;
+  }
+  button {
+    margin-top: 18px;
+    background-color: $button_bg_color;
+    color: $button_text_color;
+    width: 100%;
+    height: 56px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.15);
+    &:hover {
+      background-color: $button_hover_bg_color;
+      color: white;
+    }
+  }
+}
+

@@ -1,0 +1,32 @@
+@import "../../../../public/styles/colors.scss";
+@import "../../../../public/styles/vars.scss";
+
+.logo {
+  margin-top: 15px;
+  padding-bottom: 10px;
+  &:hover {
+    border-bottom: 3px solid $menu_item_border_color;
+  }
+  a {
+    color:$menu_item_color;
+    text-decoration: none;
+    margin: 10px;
+    vertical-align: middle;
+  }
+  a:hover, a:focus {
+    text-decoration: none;
+  }
+}
+
+.menu-item {
+  a {
+    color:$menu_item_color;
+    text-decoration: none;
+    vertical-align: middle;
+  }
+  a:hover, a:focus {
+    text-decoration: none;
+    padding-bottom: 10px;
+    border-bottom: 3px solid $menu_item_border_color;
+  }
+}

@@ -1,0 +1,18 @@
+FROM node
+
+WORKDIR /tmp
+COPY package.json /tmp/
+RUN npm install
+
+# Create app directory
+RUN mkdir -p /usr/src/app
+
+# the .dockerignore file is configured to ignore node_modules and other unnecessary files.
+COPY . /usr/src/app/
+WORKDIR /usr/src/app
+
+# In case the image is built with docker build command we need to make the node_modules available
+RUN cp -a /tmp/node_modules .
+
+EXPOSE 7000
+CMD ["npm", "run", "dev"]

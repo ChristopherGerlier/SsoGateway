@@ -1,0 +1,36 @@
+{
+    // I want to use babel-eslint for parsing!
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "mocha": true,
+        "node":true
+    },
+    "extends": "airbnb",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true,
+            "impliedStrict":true,
+            "modules":true
+        },
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "new-cap": ["error", {"capIsNewExceptions": ["Router","Server"]}],
+        "no-param-reassign": [2, { 
+            "props": false
+        }],
+        "no-console": "off",
+        "consistent-return": "off",
+        "strict" : "off",
+        "linebreak-style" : "off",
+        "import/no-unresolved" : "off",
+        "react/require-extension" : "off"
+    }
+}

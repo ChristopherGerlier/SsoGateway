@@ -1,0 +1,32 @@
+version: '2'
+services:
+  web-dev:
+    # builds from the docker file in the current directory
+    build: .
+    image: readme
+    container_name: readme-dev
+
+    # forwards the exposed port 7000 on the container to port 49161 on the host machine
+    ports:
+    - '49161:7000'
+
+    # mounts the project directory on the host to /usr/src/app/ inside the container allowing 
+    # you to modify the code without having to rebuild the image 
+    volumes:
+    - .:/usr/src/app/:rw
+
+    environment:
+    - NODE_ENV=development
+
+    # Before you run this file for the first time, make sure 
+    # you remove node_modules/ folders in your host machine
+    command: >
+      sh -c '
+      if test -d node_modules;
+      then
+        echo node_modules_exists ;
+      else
+        cp -a /tmp/node_modules /usr/src/app;
+      fi && 
+      npm run dev
+      '
