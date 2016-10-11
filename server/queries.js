@@ -29,9 +29,10 @@ const results = [];
 export default function getAllServices(request, response) {
   console.log(`Connecting to ${process.env.DATABASE_URL}`);
 
+  const connectionString = process.env.DATABASE_URL || 'postgres://postgres@db/postgres';
+
   // Get a Postgres client from the connection pool
-  pg.connect('postgres://postgres:mysecretpassword@db/postgres', (err, client, done) => {
-//  pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+  pg.connect(connectionString, (err, client, done) => {
     // Handle connection errors
     if (err) {
       done();

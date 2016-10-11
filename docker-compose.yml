@@ -42,12 +42,7 @@ services:
     - db
     
     environment:
-    - DATABASE_URL= 'postgres://postgres:mysecretpassword@db/postgres'
-#    - PGHOST=db
-#    - POSTGRES_PASSWORD=mysecretpassword
-#    - POSTGRES_DB=postgres
-#    - POSTGRES_USER=postgres
-#    - NODE_ENV=development
+    - DATABASE_URL=postgres://postgres:mysecretpassword@db/postgres
 
     # Before you run this file for the first time, make sure 
     # you remove node_modules/ folders in your host machine
