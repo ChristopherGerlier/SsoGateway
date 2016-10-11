@@ -11,6 +11,9 @@ import favicon from 'serve-favicon';
 
 import { winstonLogger } from './logger';
 
+// routes
+const services = require('./routes/services');
+
 // Express initializes app to be a function
 // handler that you can supply to an HTTP server
 const proxy = httpProxy.createProxyServer();
@@ -47,6 +50,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 
+// Mounts specified middleware at the specified path.
+// A router is a valid middleware
+app.use('/api', services);
+
 app.get('*', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(outputPath, 'index.html'));
@@ -77,7 +84,7 @@ app.use((request, response, next) => {
 app.use((error, request, response, next) => {
   if (process.env.NODE_ENV === 'development') {
     response.status(error.status);
-    response.render('error', {
+    response.render('templates/error', {
       message: error.message,
       error,
     });
@@ -90,7 +97,7 @@ app.use((error, request, response, next) => {
 // no stacktraces leaked to user
 app.use((error, request, response, next) => {
   response.status(error.status);
-  response.render('error', {
+  response.render('templates/error', {
     message: error.message,
     error: {},
   });

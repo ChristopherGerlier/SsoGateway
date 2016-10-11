@@ -1,10 +1,28 @@
 version: '2'
+
+
 services:
-  web-dev:
+  db: 
     # builds from the docker file in the current directory
-    build: .
-    image: readme
-    container_name: readme-dev
+    build: 
+      context: .
+      dockerfile: Dockerfile.postgres
+
+    image: sso-gateway-pg
+    container_name: sso-gateway-pg
+
+    environment:
+    # alter the 'postgres' user to have a password
+      - POSTGRES_PASSWORD= mysecretpassword
+
+  webapp-dev:
+    # builds from the docker file in the current directory
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+
+    image: sso-gateway
+    container_name: sso-gateway-dev
 
     # forwards the exposed port 7000 on the container to port 49161 on the host machine
     ports:
@@ -13,10 +31,23 @@ services:
     # mounts the project directory on the host to /usr/src/app/ inside the container allowing 
     # you to modify the code without having to rebuild the image 
     volumes:
-    - .:/usr/src/app/:rw
+      - .:/usr/src/app/:rw
 
-    environment:
-    - NODE_ENV=development
+    # db will be started before web-app  
+    depends_on:
+    - db
+
+    # this sets a value in the webapp-dev's '  
+#    links:
+#    - db
+    
+#    environment:
+#      -DATABASE_URL= postgres://postgres:mysecretpassword@db:5432/postgres
+#    - PGHOST=db
+#    - POSTGRES_PASSWORD=mysecretpassword
+#    - POSTGRES_DB=postgres
+#    - POSTGRES_USER=postgres
+#    - NODE_ENV=development
 
     # Before you run this file for the first time, make sure 
     # you remove node_modules/ folders in your host machine
@@ -30,3 +61,4 @@ services:
       fi && 
       npm run dev
       '
+      

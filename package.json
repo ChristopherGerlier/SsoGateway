@@ -1,4 +1,4 @@
-s{
+{
   "author": "CRF Health",
   "name": "webstudio-docs",
   "version": "1.0.0",
@@ -21,6 +21,7 @@ s{
     "test-client-watch": "npm run test-client -- --watch --watch-extensions jsx"
   },
   "dependencies": {
+    "bluebird": "3.4.6",
     "body-parser": "^1.15.2",
     "chalk": "^1.1.3",
     "compression": "^1.6.2",
@@ -36,6 +37,7 @@ s{
     "json-loader": "^0.5.4",
     "minimist": "^1.2.0",
     "morgan": "^1.7.0",
+    "pg-promise": "5.3.4",
     "react": "^15.3.0",
     "react-addons-pure-render-mixin": "^15.3.0",
     "react-bootstrap": "^0.30.3",

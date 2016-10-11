@@ -1,3 +1,4 @@
+/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 /* eslint-disable no-console */
 
 import chalk from 'chalk';
