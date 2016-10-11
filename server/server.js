@@ -9,7 +9,9 @@ import path from 'path';
 import httpProxy from 'http-proxy';
 import favicon from 'serve-favicon';
 
-import { winstonLogger } from './logger';
+import {
+  winstonLogger,
+} from './logger';
 
 // routes
 const services = require('./routes/services');
@@ -23,7 +25,7 @@ const outputPath = path.resolve(process.cwd(), 'build');
 
 // view engine setup
 // EJS will look for templates under the view directory
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 
 /**
@@ -33,7 +35,9 @@ app.set('view engine', 'ejs');
  * function
  */
 if (process.env.NODE_ENV !== 'test') {
-  app.use(morgan('combined', { stream: winstonLogger.stream }));
+  app.use(morgan('combined', {
+    stream: winstonLogger.stream,
+  }));
   if (process.env.NODE_ENV === 'production') {
     // secure app
     app.use(helmet());
@@ -47,7 +51,9 @@ app.use(favicon(path.join(__dirname, '../public', 'images', 'favicon.ico')));
 app.use(bodyParser.json());
 
 // Forces the use of node's native query parser module: QueryString
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false,
+}));
 app.use(compression());
 
 // Mounts specified middleware at the specified path.
@@ -58,7 +64,9 @@ app.get('*', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(outputPath, 'index.html'));
   } else {
-    proxy.web(req, res, { target: 'http://localhost:8080' });
+    proxy.web(req, res, {
+      target: 'http://localhost:8080',
+    });
   }
 });
 
@@ -83,7 +91,7 @@ app.use((request, response, next) => {
 // no-unused-vars here
 app.use((error, request, response, next) => {
   if (process.env.NODE_ENV === 'development') {
-    response.status(error.status);
+    response.status(error.status >= 100 && error.status < 600 ? error.code : 500);
     response.render('templates/error', {
       message: error.message,
       error,

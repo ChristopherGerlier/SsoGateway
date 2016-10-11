@@ -17,13 +17,6 @@ import server from '../server.js';
 const httpServer = http.Server(server);
 const argv = minimist(process.argv.slice(2));
 
-console.log('starting server');
-if (process.env.NODE_ENV === 'production') {
-  console.log('production');
-} else {
-  console.log('development');
-}
-
 /**
  * Normalize a port into a number, string or false
  */

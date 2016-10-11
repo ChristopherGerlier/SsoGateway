@@ -13,7 +13,7 @@ services:
 
     environment:
     # alter the 'postgres' user to have a password
-      - POSTGRES_PASSWORD= mysecretpassword
+      - POSTGRES_PASSWORD=mysecretpassword
 
   webapp-dev:
     # builds from the docker file in the current directory
@@ -38,11 +38,11 @@ services:
     - db
 
     # this sets a value in the webapp-dev's '  
-#    links:
-#    - db
+    links:
+    - db
     
-#    environment:
-#      -DATABASE_URL= postgres://postgres:mysecretpassword@db:5432/postgres
+    environment:
+    - DATABASE_URL= 'postgres://postgres:mysecretpassword@db/postgres'
 #    - PGHOST=db
 #    - POSTGRES_PASSWORD=mysecretpassword
 #    - POSTGRES_DB=postgres
