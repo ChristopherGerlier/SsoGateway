@@ -8,18 +8,23 @@ import morgan from 'morgan';
 import path from 'path';
 import httpProxy from 'http-proxy';
 import favicon from 'serve-favicon';
+import swaggerJSDoc from 'swagger-jsdoc';
+import options from '../internals/swaggerDefinition.js';
 
 import {
   winstonLogger,
 } from './logger';
 
 // routes
-const services = require('./routes/services');
+const users = require('./routes/users');
 
 // Express initializes app to be a function
 // handler that you can supply to an HTTP server
 const proxy = httpProxy.createProxyServer();
 const app = express();
+
+// initialize swagger-jsdoc
+const swaggerSpec = swaggerJSDoc(options);
 
 const outputPath = path.resolve(process.cwd(), 'build');
 
@@ -52,13 +57,19 @@ app.use(bodyParser.json());
 
 // Forces the use of node's native query parser module: QueryString
 app.use(bodyParser.urlencoded({
-  extended: false,
+  extended: true,
 }));
 app.use(compression());
 
 // Mounts specified middleware at the specified path.
 // A router is a valid middleware
-app.use('/api', services);
+app.use('/api', users);
+
+// Serve swagger docs the way you like (Recommendation: swagger-tools)
+app.get('/api-docs.json', (request, response) => {
+  response.setHeader('Content-Type', 'application/json');
+  response.send(swaggerSpec);
+});
 
 app.get('*', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
@@ -83,15 +94,18 @@ app.use((request, response, next) => {
 });
 
 /* eslint-disable no-unused-vars*/
-// Error Middlewares
-// development error handler
-// will print stack trace
-// The method signature has to be (error, request, response, next) otherwise
-// it will not be recognized as an error middleware. This is why we disable elint for
-// no-unused-vars here
+/**
+ * Error Middlewares
+ *
+ * development error handler will print stack trace
+ * The method signature has to be (error, request, response, next) otherwise
+ * it will not be recognized as an error middleware. This is why we disable elint for
+ * no-unused-vars here
+ */
 app.use((error, request, response, next) => {
+  console.log('Handling error');
   if (process.env.NODE_ENV === 'development') {
-    response.status(error.status >= 100 && error.status < 600 ? error.code : 500);
+    response.status(error.status >= 100 && error.status < 600 ? error.status : 500);
     response.render('templates/error', {
       message: error.message,
       error,

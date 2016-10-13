@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile.dev
 
     image: sso-gateway
-    container_name: sso-gateway-dev
+    container_name: sso-gateway
 
     # forwards the exposed port 7000 on the container to port 49161 on the host machine
     ports:

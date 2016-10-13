@@ -15,7 +15,7 @@
     "prestart": "babel ./server --out-dir build/",
     "prod": "npm start",
     "start": "cross-env NODE_ENV=production node ./build/bin/www.js --port 7050",
-    "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./server/bin/www.js --port 7000",
+    "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./server/bin/www.js --port 7000 -L",
     "lint": "eslint ./client/src ./client/tests --ext .js --ext .jsx --ignore-pattern dist --cache",
     "test-client": "mocha --compilers js:babel-core/register --require ignore-styles --require ./client/test/test_setup.js \"./client/**/*@(test.js|test.jsx)\"",
     "test-client-watch": "npm run test-client -- --watch --watch-extensions jsx"
@@ -49,6 +49,7 @@
     "redux": "^3.6.0",
     "reselect": "^2.5.3",
     "serve-favicon": "2.3.0",
+    "swagger-jsdoc": "1.7.0",
     "winston": "^2.2.0"
   },
   "devDependencies": {

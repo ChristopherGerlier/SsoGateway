@@ -21,14 +21,14 @@ INSERT INTO services (service)
   VALUES ('Reports');
 
 CREATE TABLE access_rights (
-  users_id integer REFERENCES users,
-  services_id integer REFERENCES services
+  user_id integer REFERENCES users,
+  service_id integer REFERENCES services
 );
 
-INSERT INTO access_rights (users_id, services_id)
+INSERT INTO access_rights (user_id, service_id)
   VALUES (1 , 1);
-INSERT INTO access_rights (users_id, services_id)
+INSERT INTO access_rights (user_id, service_id)
   VALUES (1 , 2);
-INSERT INTO access_rights (users_id, services_id)
+INSERT INTO access_rights (user_id, service_id)
   VALUES (2 , 1);
 
