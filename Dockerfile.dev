@@ -2,7 +2,8 @@ FROM node
 
 WORKDIR /tmp
 COPY package.json /tmp/
-RUN npm install
+RUN npm install --global yarn
+RUN yarn
 
 # Create app directory
 RUN mkdir -p /usr/src/app
