@@ -39,8 +39,8 @@ services:
       - .:/usr/src/app/:rw
 
     # db will be started before web-app  
-    depends_on:
-    - postgres-db
+#    depends_on:
+#    - postgres-db
 
     # this sets a value in the webapp-dev's '  
     links:
@@ -57,7 +57,7 @@ services:
       then
         echo node_modules_exists ;
       else
-        cp -a /tmp/node_modules /usr/src/app;
+       ln -s /install/node_modules /usr/src/app;
       fi && 
       npm run dev
       '

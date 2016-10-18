@@ -7,6 +7,7 @@ docker rmi sso-gateway-postgres
 docker stop sso-gateway-redis
 docker rm sso-gateway-redis
 docker rmi sso-gateway-redis
+del %~dp0..\..\node_modules
 rmdir /Q /s %~dp0..\..\node_modules
 rmdir /Q /s %~dp0..\..\build
 del /Q /s %~dp0..\..\*.gzip

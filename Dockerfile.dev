@@ -1,19 +1,34 @@
 FROM node
 
-WORKDIR /tmp
-COPY package.json /tmp/
+# to properly install node-gyp package
+ENV USER root
+
+
+# so that npm installs not into the code path, so we can share this directory and still have npm_modules not shared
 RUN npm install --global yarn
-RUN yarn
+# so that executable from modules are added to the path
+#ENV PATH /install/node_modules/.bin:$PATH  
+# so that you can `require` any installed modeule
+#ENV NODE_PATH /install/node_modules/
+
+RUN mkdir -p /install/ 
+COPY ./package.json /install/package.json 
+WORKDIR /install
+RUN yarn 
+
+#COPY package.json /tmp/
+#RUN npm install --global yarn
+#RUN yarn
 
 # Create app directory
 RUN mkdir -p /usr/src/app
 
 # the .dockerignore file is configured to ignore node_modules and other unnecessary files.
+WORKDIR /usr/src/app/
 COPY . /usr/src/app/
-WORKDIR /usr/src/app
 
 # In case the image is built with docker build command we need to make the node_modules available
-RUN cp -a /tmp/node_modules .
+# RUN cp -a /tmp/node_modules .
 
 EXPOSE 7000
 CMD ["npm", "run", "dev"]
