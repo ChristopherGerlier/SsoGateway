@@ -1,0 +1,64 @@
+version: '2'
+
+services:
+#  redis-db:
+#    image: redis
+#    container_name: sso-gateway-redis-test
+#    ports:
+#      - '6379:6379'
+
+  postgres-db: 
+    # builds from the docker file in the current directory
+    build: 
+      context: .
+      dockerfile: Dockerfile.test.postgres
+
+    image: sso-gateway-postgres-test
+    container_name: sso-gateway-postgres-test
+
+    environment:
+    # alter the 'postgres' user to have a password
+    - POSTGRES_PASSWORD=mysecretpassword
+
+  sso-gateway:
+    # builds from the docker file in the current directory
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+
+    image: sso-gateway-test
+    container_name: sso-gateway-test
+
+    # forwards the exposed port 7000 on the container to port 49161 on the host machine
+    ports:
+    - '49160:7000'
+
+    # mounts the project directory on the host to /usr/src/app/ inside the container allowing 
+    # you to modify the code without having to rebuild the image 
+    volumes:
+      - .:/usr/src/app/:rw
+
+    # db will be started before web-app
+    #depends_on:
+    #- postgres-db
+
+    # this sets a value in the webapp-dev's '
+    links:
+    - postgres-db
+    
+    environment:
+    - DATABASE_URL=postgres://postgres:mysecretpassword@postgres-db/postgres
+    - NODE_ENV=test
+
+    # Before you run this file for the first time, make sure 
+    # you remove node_modules/ folders in your host machine
+    command: >
+      sh -c '
+      if test -d node_modules;
+      then
+        echo node_modules_exists ;
+      else
+       ln -s /install/node_modules /usr/src/app;
+      fi && 
+      npm run test-server-watch
+      '

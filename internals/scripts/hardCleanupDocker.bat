@@ -7,6 +7,12 @@ docker rmi sso-gateway-postgres
 docker stop sso-gateway-redis
 docker rm sso-gateway-redis
 docker rmi sso-gateway-redis
+docker stop sso-gateway-test
+docker rm sso-gateway-test
+docker rmi sso-gateway-test
+docker stop sso-gateway-postgres-test
+docker rm sso-gateway-postgres-test
+docker rmi sso-gateway-postgres-test
 del %~dp0..\..\node_modules
 rmdir /Q /s %~dp0..\..\node_modules
 rmdir /Q /s %~dp0..\..\build
