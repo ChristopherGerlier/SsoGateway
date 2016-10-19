@@ -18,7 +18,10 @@
     "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./server/bin/www.js --port 7000 -L",
     "lint": "eslint ./client/src ./client/tests --ext .js --ext .jsx --ignore-pattern dist --cache",
     "test-client": "mocha --compilers js:babel-core/register --require ignore-styles --require ./client/test/test_setup.js \"./client/**/*@(test.js|test.jsx)\"",
-    "test-client-watch": "npm run test-client -- --watch --watch-extensions jsx"
+    "test-client-watch": "npm run test-client -- --watch --watch-extensions jsx",
+    "test-server": "mocha --compilers js:babel-core/register \"./server/**/*@(test.js)\"",
+    "test-server-watch": "npm run test-server -- --watch --watch-extensions js",
+    "test-server-coverage": "nyc --reporter=lcov report npm run test-server"
   },
   "dependencies": {
     "bluebird": "3.4.6",
@@ -69,7 +72,7 @@
     "babel-register": "^6.14.0",
     "babel-root-import": "4.1.0",
     "chai": "^3.5.0",
-    "chai-immutable": "^1.6.0",
+    "chai-http": "^3.0.0",
     "clean-webpack-plugin": "^0.1.10",
     "concurrently": "^2.2.0",
     "css-loader": "^0.23.1",
@@ -91,6 +94,7 @@
     "mocha": "^3.0.2",
     "node-sass": "^3.8.0",
     "nodemon": "^1.10.2",
+    "nyc": "8.3.1",
     "postcss-autoreset": "^1.1.5",
     "postcss-initial": "^1.5.2",
     "postcss-loader": "^0.13.0",

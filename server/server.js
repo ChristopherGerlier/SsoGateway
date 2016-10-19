@@ -25,7 +25,6 @@ const app = express();
 
 // initialize swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(options);
-
 const outputPath = path.resolve(process.cwd(), 'build');
 
 // view engine setup
@@ -33,12 +32,7 @@ const outputPath = path.resolve(process.cwd(), 'build');
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
 
-/**
- * Server static assets out of public: css, images
- * Express looks up the files in the order in which
- * you set the static directories with the express.static middleware
- * function
- */
+// prevent application log message from displaying in the stdout when the tests are ran
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('combined', {
     stream: winstonLogger.stream,
@@ -49,6 +43,12 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(express.static(outputPath));
   }
 }
+/**
+ * Server static assets out of public: css, images
+ * Express looks up the files in the order in which
+ * you set the static directories with the express.static middleware
+ * function
+ */
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(favicon(path.join(__dirname, '../public', 'images', 'favicon.ico')));
 
@@ -103,7 +103,6 @@ app.use((request, response, next) => {
  * no-unused-vars here
  */
 app.use((error, request, response, next) => {
-  console.log('Handling error');
   if (process.env.NODE_ENV === 'development') {
     response.status(error.status >= 100 && error.status < 600 ? error.status : 500);
     response.render('templates/error', {

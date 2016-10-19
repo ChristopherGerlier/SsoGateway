@@ -9,7 +9,9 @@ const pgp = pgpromise({
 });
 const db = pgp(process.env.DATABASE_URL);
 
-// add query functions
+/**
+ * Retrieve all users from the system 
+ */
 export function getAllUsers(callback) {
   db.any('SELECT * FROM users')
     .then(data => {
@@ -20,7 +22,9 @@ export function getAllUsers(callback) {
     });
 }
 
-// add query functions
+/**
+ * Get a user with a specific userId 
+ */
 export function getUser(userId, callback) {
   db.one('SELECT * FROM users WHERE id = $1', userId)
     .then(data => {
@@ -33,7 +37,7 @@ export function getUser(userId, callback) {
 }
 
 /**
- *
+ * Get all services for a specific userId 
  */
 export function getServicesForUser(userId, callback) {
   db.any('SELECT s.service FROM access_rights a INNER JOIN services s ON s.id = a.service_id WHERE a.user_id = $1', userId)

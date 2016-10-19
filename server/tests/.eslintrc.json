@@ -1,0 +1,7 @@
+{
+    // Configuration cascading 
+    "rules": {
+        "no-unused-expressions" : "off",
+        "import/no-extraneous-dependencies" : "off"
+    }
+}

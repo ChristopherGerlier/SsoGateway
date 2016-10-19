@@ -60,5 +60,6 @@ services:
       else
        ln -s /install/node_modules /usr/src/app;
       fi && 
+      npm run test-server-coverage &&
       npm run test-server-watch
       '
