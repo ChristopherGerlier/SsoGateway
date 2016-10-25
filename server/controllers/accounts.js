@@ -1,16 +1,12 @@
 /* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
-import * as model from '../model/users.js';
+import * as model from '../model/accounts.js';
 
 /**
- * Retreives all the users
+ * Retreives all the accounts
  * NO next needed as it is the last middleware called.
  */
-export function getAllUsers(request, response, next) { // typical middleware signature
-  model.getAllUsers((error, data) => { // anonymous callback coming from the callee
-    if (error) {
-      return next(error);
-    }
-
+export function getAllAccounts(request, response) { // typical middleware signature
+  model.getAllAccounts((data) => { // anonymous callback coming from the callee
     // Makes since of the json and turns it into a string
     // The body-parser.json() only handles incoming requests and does not help here.
     response.status(200).json(data);
@@ -18,13 +14,12 @@ export function getAllUsers(request, response, next) { // typical middleware sig
 }
 
 /**
- * Retreives all the users
- * NO next needed as it is the last middleware called.
+ * Retreive a specific account
  */
-export function getUser(request, response, next) { // typical middleware signature
+export function getAccount(request, response, next) { // typical middleware signature
   const uid = parseInt(request.params.uid, 10);
 
-  model.getUser(uid, (error, data) => { // anonymous callback coming from the callee
+  model.getAccount(uid, (error, data) => { // anonymous callback coming from the callee
     if (error) {
       return next(error);
     }
@@ -33,12 +28,12 @@ export function getUser(request, response, next) { // typical middleware signatu
 }
 
 /**
- * Retreives all the services for a given user
+ * Retreives all the services for a given account
  */
-export function getServicesForUser(request, response, next) { // typical middleware signature
+export function getServicesForAccount(request, response, next) { // typical middleware signature
   const uid = parseInt(request.params.uid, 10);
 
-  model.getServicesForUser(uid, (error, data) => { // anonymous callback coming from the callee
+  model.getServicesForAccount(uid, (error, data) => { // anonymous callback coming from the callee
     if (error) {
       // When you pass an Error() to next, Express.js will not jump to
       // the next route or middleware, but will instead jump to processng what is

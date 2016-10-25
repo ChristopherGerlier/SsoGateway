@@ -6,12 +6,12 @@ import styles from './Menu.scss';
 
 const menuitems = () => {
   const items = [
-    { name: 'LocalizationTool', url: '/Home' },
+    { name: 'Localization Tool', url: '/Home' },
     { name: 'Reports', url: '/' },
   ];
 
-  return items.map((item) =>
-    <NavItem eventKey={1} href="/">
+  return items.map((item, i) =>
+    <NavItem key={i} eventKey={1} href="/">
       <div className={styles['menu-item']}>
         <Link to={item.url}> {item.name}</Link>
       </div>

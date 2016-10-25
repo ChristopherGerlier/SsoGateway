@@ -30,6 +30,7 @@
         "consistent-return": "off",
         "strict" : "off",
         "linebreak-style" : "off",
+        "max-len":"off",
         "import/no-unresolved" : "off",
         "react/require-extension" : "off"
     }

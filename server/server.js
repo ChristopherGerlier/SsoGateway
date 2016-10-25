@@ -9,14 +9,17 @@ import path from 'path';
 import httpProxy from 'http-proxy';
 import favicon from 'serve-favicon';
 import swaggerJSDoc from 'swagger-jsdoc';
-import options from '../internals/swaggerDefinition.js';
+import swaggerDefinition from '../internals/swaggerDefinition.js';
+//import validateRequest from './middlewares/validateRequest.js';
 
 import {
   winstonLogger,
 } from './logger';
 
+const RESTAPI_PREFIX = '/api/v1/';
+
 // routes
-const users = require('./routes/users');
+const restRouter = require('./routes/restRouter.js');
 
 // Express initializes app to be a function
 // handler that you can supply to an HTTP server
@@ -24,7 +27,7 @@ const proxy = httpProxy.createProxyServer();
 const app = express();
 
 // initialize swagger-jsdoc
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(swaggerDefinition);
 const outputPath = path.resolve(process.cwd(), 'build');
 
 // view engine setup
@@ -43,6 +46,7 @@ if (process.env.NODE_ENV !== 'test') {
     app.use(express.static(outputPath));
   }
 }
+
 /**
  * Server static assets out of public: css, images
  * Express looks up the files in the order in which
@@ -56,14 +60,29 @@ app.use(favicon(path.join(__dirname, '../public', 'images', 'favicon.ico')));
 app.use(bodyParser.json());
 
 // Forces the use of node's native query parser module: QueryString
-app.use(bodyParser.urlencoded({
-  extended: true,
-}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compression());
 
-// Mounts specified middleware at the specified path.
-// A router is a valid middleware
-app.use('/api', users);
+// Enable Cross Origin Sharing
+// app.all('/*', (request, response, next) => {
+//   // CORS headers
+//   response.header('Access-Control-Allow-Origin', '*'); // restrict it to the required domain
+//   response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//   // Set custom headers for CORS
+//   response.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+//   if (request.method === 'OPTIONS') {
+//     response.status(200).end();
+//   } else {
+//     next();
+//   }
+// });
+
+// Auth Middleware - This will check if the token is valid
+// Only the requests that start with /api/v1/* will be checked for the token.
+// Any URL's that do not follow the below pattern should be avoided unless you
+// are sure that authentication is not needed
+// app.all('/api/*', validateRequest);
+app.use(RESTAPI_PREFIX, restRouter);
 
 // Serve swagger docs the way you like (Recommendation: swagger-tools)
 app.get('/api-docs.json', (request, response) => {
@@ -71,7 +90,8 @@ app.get('/api-docs.json', (request, response) => {
   response.send(swaggerSpec);
 });
 
-app.get('*', (req, res) => {
+// Forward all other request to frontend react router
+app.use('/', (req, res) => {
   if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(outputPath, 'index.html'));
   } else {
@@ -96,11 +116,6 @@ app.use((request, response, next) => {
 /* eslint-disable no-unused-vars*/
 /**
  * Error Middlewares
- *
- * development error handler will print stack trace
- * The method signature has to be (error, request, response, next) otherwise
- * it will not be recognized as an error middleware. This is why we disable elint for
- * no-unused-vars here
  */
 app.use((error, request, response, next) => {
   if (process.env.NODE_ENV === 'development') {
@@ -115,7 +130,6 @@ app.use((error, request, response, next) => {
 });
 
 // Production error handler
-// no stacktraces leaked to user
 app.use((error, request, response, next) => {
   response.status(error.status);
   response.render('templates/error', {

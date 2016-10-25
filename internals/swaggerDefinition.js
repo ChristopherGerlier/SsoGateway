@@ -22,7 +22,7 @@ const options = {
   // import swaggerDefinitions
   swaggerDefinition,
   // path to the API docs
-  apis: ['./server/routes/users.js'],
+  apis: ['./server/routes/restRouter.js'],
 };
 
 export default options;

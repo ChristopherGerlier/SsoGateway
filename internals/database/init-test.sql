@@ -1,38 +1,39 @@
-CREATE TABLE users (
+CREATE TABLE accounts (
   id SERIAL PRIMARY KEY,
   username VARCHAR,
-  password VARCHAR,
-  stream VARCHAR
+  email VARCHAR,
+  password VARCHAR
 );
 
-INSERT INTO users (username, password, stream)
-  VALUES ('Mike', 'Mike', 'CS');
-INSERT INTO users (username, password, stream)
-  VALUES ('Rob', 'Rob', 'PM');
-INSERT INTO users (username, password, stream)
-  VALUES ('John', 'John', 'VS');
+INSERT INTO accounts (username, password, email)
+  VALUES ('Mike', 'Mike', 'mike@crfhealth.com');
+INSERT INTO accounts (username, password, email)
+  VALUES ('Rob', 'Rob', 'rob@crfhealth.com');
+INSERT INTO accounts (username, password, email)
+  VALUES ('John', 'John', 'John@crfhealth.com');
 
 CREATE TABLE services (
   id SERIAL PRIMARY KEY,
-  service VARCHAR
+  name VARCHAR,
+  description VARCHAR
 );
 
-INSERT INTO services (service)
-  VALUES ('Localization Tool');
-INSERT INTO services (service)
-  VALUES ('Reports');
-INSERT INTO services (service)
-  VALUES ('PRS');
+INSERT INTO services (name, description)
+  VALUES ('Localization Tool', 'The localization tool');
+INSERT INTO services (name, description)
+  VALUES ('Reports', 'The reports tool');
+INSERT INTO services (name, description)
+  VALUES ('PRS', 'The PRS tool');
 
 CREATE TABLE access_rights (
-  user_id integer REFERENCES users,
+  account_id integer REFERENCES accounts,
   service_id integer REFERENCES services
 );
 
-INSERT INTO access_rights (user_id, service_id)
+INSERT INTO access_rights (account_id, service_id)
   VALUES (1 , 1);
-INSERT INTO access_rights (user_id, service_id)
+INSERT INTO access_rights (account_id, service_id)
   VALUES (1 , 2);
-INSERT INTO access_rights (user_id, service_id)
+INSERT INTO access_rights (account_id, service_id)
   VALUES (2 , 1);
 

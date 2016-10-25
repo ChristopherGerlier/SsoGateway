@@ -7,26 +7,24 @@ import pgpromise from 'pg-promise';
 const pgp = pgpromise({
   promiseLib: promise,
 });
+
 const db = pgp(process.env.DATABASE_URL);
 
 /**
- * Retrieve all users from the system 
+ * Retrieve all accounts from the system
  */
-export function getAllUsers(callback) {
-  db.any('SELECT * FROM users')
+export function getAllAccounts(callback) {
+  db.any('SELECT * FROM accounts')
     .then(data => {
-      callback(null, data);
-    })
-    .catch(error => {
-      callback(error, null);
+      callback(data);
     });
 }
 
 /**
- * Get a user with a specific userId 
+ * Get a user with a specific accountId
  */
-export function getUser(userId, callback) {
-  db.one('SELECT * FROM users WHERE id = $1', userId)
+export function getAccount(userId, callback) {
+  db.one('SELECT * FROM accounts WHERE id = $1', userId)
     .then(data => {
       callback(null, data);
     })
@@ -37,10 +35,10 @@ export function getUser(userId, callback) {
 }
 
 /**
- * Get all services for a specific userId 
+ * Get all services for a specific accountId
  */
-export function getServicesForUser(userId, callback) {
-  db.any('SELECT s.service FROM access_rights a INNER JOIN services s ON s.id = a.service_id WHERE a.user_id = $1', userId)
+export function getServicesForAccount(accountId, callback) {
+  db.any('SELECT s.name FROM access_rights a INNER JOIN services s ON s.id = a.service_id WHERE a.account_id = $1', accountId)
     .then(data => {
       callback(null, data);
     })
