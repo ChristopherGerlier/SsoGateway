@@ -1,8 +1,9 @@
 {
   "presets": ["es2015", "react","stage-0"],
   "plugins": [
-    'react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy',
-    ["babel-root-import", [{"rootPathPrefix": "~", "rootPathSuffix": "client/src" }]]
+    "react-html-attrs", 
+    "transform-class-properties", 
+    "transform-decorators-legacy"
   ],
   "env": {
     "start": {

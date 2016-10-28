@@ -10,31 +10,7 @@
  *  - An HTTP Status Code indicating success or failure (possible codes can be found below)
  *  - Any HTTP Headers
  *  - A Response Body, which will contain the requested entity resource (if the call succeeded), or a detailed error (if the call failed)
- */
-export const GET_HTTP_STATUS = {
-  // The request was successful and the response body contains the resource requested.
-  OK: 200,
-  // A common redirect response.
-  // You can GET the resource at the URL found in the location response header.
-  FOUND: 302,
-  // The data given in the POST failed validation. Inspect the response body for details.
-  BAD_REQUEST: 400,
-  // Authentication credentials are required to access the resource.
-  // All requests must be authenticated.
-  SERVICE_UNAUTHORIZED: 401,
-  // The supplied authentication credentials are not sufficient to access the resource.
-  SERVICE_FORBIDDEN: 403,
-  // We could not locate the resource based on the specified URL.
-  NOT_FOUND: 404,
-  // Your application is sending too many simultaneous requests.
-  TOO_MANY_REQUESTS: 429,
-  // We could not create or update the resource. Please try again.
-  SERVER_ERROR: 500,
-  // We are temporarily unable to service the request. Please wait for a bit and try again.
-  SERVICE_UNAVAILABLE: 503,
-};
-
-/**
+ *
  * Creating resources
  *
  * You create a resource by submitting an HTTP POST to a resource URL. Any POST body must be represented as JSON.
@@ -44,10 +20,15 @@ export const GET_HTTP_STATUS = {
  *   - Any HTTP Headers
  *   - A Response Body, which will contain the created entity resource (if the call succeeded), or a detailed error (if the call failed)
  */
-export const POST_HTTP_STATUS = {
+export default {
+  // The request was successful and the response body contains the resource requested.
+  OK: 200,
   // The request was successful, we created a new resource, and the response body contains the representation.
   // The Location header contains the new resource’s canonical URL.
   CREATED: 201,
+  // A common redirect response.
+  // You can GET the resource at the URL found in the location response header.
+  FOUND: 302,
   // The data given in the POST failed validation. Inspect the response body for details.
   BAD_REQUEST: 400,
   // Authentication credentials are required to access the resource.

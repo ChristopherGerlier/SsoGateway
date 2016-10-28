@@ -6,11 +6,11 @@ import bodyParser from 'body-parser';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
+import cors from 'cors';
 import httpProxy from 'http-proxy';
 import favicon from 'serve-favicon';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerDefinition from '../internals/swaggerDefinition.js';
-//import validateRequest from './middlewares/validateRequest.js';
 
 import {
   winstonLogger,
@@ -56,6 +56,9 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(favicon(path.join(__dirname, '../public', 'images', 'favicon.ico')));
 
+// cross domain calls support
+app.use(cors({ exposedHeaders: 'token', origin: ['http://localhost:8080', 'http://localhost:7000'] }));
+
 // returns a middleware that only parses json
 app.use(bodyParser.json());
 
@@ -63,25 +66,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compression());
 
-// Enable Cross Origin Sharing
-// app.all('/*', (request, response, next) => {
-//   // CORS headers
-//   response.header('Access-Control-Allow-Origin', '*'); // restrict it to the required domain
-//   response.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//   // Set custom headers for CORS
-//   response.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
-//   if (request.method === 'OPTIONS') {
-//     response.status(200).end();
-//   } else {
-//     next();
-//   }
-// });
-
-// Auth Middleware - This will check if the token is valid
-// Only the requests that start with /api/v1/* will be checked for the token.
-// Any URL's that do not follow the below pattern should be avoided unless you
-// are sure that authentication is not needed
-// app.all('/api/*', validateRequest);
 app.use(RESTAPI_PREFIX, restRouter);
 
 // Serve swagger docs the way you like (Recommendation: swagger-tools)
@@ -104,7 +88,7 @@ app.use('/', (req, res) => {
 // If no routes can be mapped then use the following middleware
 // catch 404 and forward to error handler
 app.use((request, response, next) => {
-  const error = new Error('Resource not found');
+  const error = new Error(`Resource not found: ${request.method}  ${request.originalUrl}`);
   error.status = 404;
 
   // When you pass an Error() to next, Express.js will not jump to

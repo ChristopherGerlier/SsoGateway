@@ -1,9 +1,14 @@
 /* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 import express from 'express';
-import * as controller from '../controllers/accounts.js';
-import { authenticate } from '../controllers/auth.js';
+import * as accounts from '../controllers/accounts.js';
+import * as groups from '../controllers/groups.js';
+import { authenticate, validateRequest } from '../middlewares/auth.js';
 
 const router = express.Router();
+
+
+// mandatory auth middleware
+// router.use(validateRequest);
 
 /**
  * @swagger
@@ -11,27 +16,27 @@ const router = express.Router();
  *   post:
  *     tags:
  *       - Authenticate
- *     description: Authenticates a user based on email and password
- *     summary: Authenticates a user
+ *     description: Authenticates an account based on email and password
+ *     summary: Authenticates an account
  *     operationId: authenticate
  *     produces:
  *       - application/json
  *     responses:
- *       200:
- *         description: successfully returns a JWT token
+ *       201:
+ *         description: successfully created a JWT token
+ *         schema:
+ *           $ref: '#/definitions/Authorization'
+ *       401:
+ *         description: Invalid credentials
  *     parameters:
  *     - name: credentials
- *       description: credentials 
+ *       description: credentials
  *       in: body
  *       required: true
  *       schema:
  *         $ref: '#/definitions/Credentials'
  */
 router.route('/authenticate')
-  .all((req, res, next) => {
-    console.log(req.body);
-    next();
-  })
   .post(authenticate);
 
 /**
@@ -44,15 +49,36 @@ router.route('/authenticate')
  *       password:
  *         type: string
  *
+ *   Authorization:
+ *     properties:
+ *       token:
+ *         type: string
+ *       expires:
+ *         type: string
+ *       email:
+ *         type: string
+ *       accountInfo:
+ *         type: object
+ *         properties:
+ *           email:
+ *             type: string
+ *           role:
+ *             type: string
+ *           services:
+ *             type: array
+ *             items:
+ *               $ref: '#/definitions/Service'
+ *
+ *
  *   Account:
  *     properties:
  *       id:
  *         type: integer
- *       name:
+ *       username:
+ *         type: string
+ *       email:
  *         type: string
  *       password:
- *         type: string
- *       stream:
  *         type: string
  *
  *   Service:
@@ -96,7 +122,7 @@ router.route('/authenticate')
  *             $ref: '#/definitions/Account'
  */
 router.route('/accounts')
-  .get(controller.getAllAccounts);
+  .get(accounts.getAllAccounts);
 
 /**
  * @swagger
@@ -126,23 +152,23 @@ router.route('/accounts')
  *       type: integer
  */
 router.route('/accounts/:uid')
-  .get(controller.getAccount);
+  .get(accounts.getAccount);
 
 /**
  * @swagger
- * /api/v1/accounts/{id}/services:
+ * /api/v1/groups/{id}/services:
  *   get:
  *     tags:
- *       - Accounts
- *     description: Returns a list of services for a single account based on user ID
- *     summary: Find all services for an account
- *     operationId: getServicesForAccount
+ *       - Groups
+ *     description: Returns a list of services authorized for a group
+ *     summary: Find all services for a group
+ *     operationId: getServicesForGroup
  *     produces:
  *       - application/json
  *       - text/html
  *     responses:
  *       200:
- *         description: A list of services for a single account
+ *         description: A list of services authorized for a group
  *         schema:
  *           $ref: '#/definitions/Service'
  *       405:
@@ -150,14 +176,14 @@ router.route('/accounts/:uid')
  *         schema:
  *           $ref: '#/definitions/ErrorModel'
  *     parameters:
- *     - name: id
- *       description: ID of the account to use
+ *     - name: name
+ *       description: name of the group to use
  *       in: path
  *       required: true
  *       type: integer
  */
-router.route('/accounts/:uid/services')
-  .get(controller.getServicesForAccount);
+router.route('/groups/:groupname/services')
+  .get(groups.getServicesForGroup);
 
 router.use('*', (request, response, next) => {
   const error = new Error('Not supported api');

@@ -1,35 +1,25 @@
+CREATE TABLE groups (
+  name text,
+  description text,
+  UNIQUE (name)
+);
+
 CREATE TABLE accounts (
   id SERIAL PRIMARY KEY,
-  username VARCHAR,
-  email VARCHAR,
-  password VARCHAR
+  username text,
+  email text,
+  password text,
+  group_name text REFERENCES groups(name),
+  UNIQUE (email)
 );
-
-INSERT INTO accounts (username, password, email)
-  VALUES ('Mike', 'Mike', 'mike@crfhealth.com');
-INSERT INTO accounts (username, password, email)
-  VALUES ('Rob', 'Rob', 'rob@crfhealth.com');
 
 CREATE TABLE services (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR,
-  description VARCHAR
+  name text,
+  description text,
+  UNIQUE (name)
 );
 
-INSERT INTO services (name, description)
-  VALUES ('Localization Tool', 'The localization tool');
-INSERT INTO services (name, description)
-  VALUES ('Reports', 'The reports tool');
-
-CREATE TABLE access_rights (
-  account_id integer REFERENCES accounts,
-  service_id integer REFERENCES services
+CREATE TABLE permissions (
+  group_name text REFERENCES groups(name),
+  service_name text REFERENCES services(name)
 );
-
-INSERT INTO access_rights (account_id, service_id)
-  VALUES (1 , 1);
-INSERT INTO access_rights (account_id, service_id)
-  VALUES (1 , 2);
-INSERT INTO access_rights (account_id, service_id)
-  VALUES (2 , 1);
-

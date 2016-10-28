@@ -11,7 +11,7 @@ services:
     # builds from the docker file in the current directory
     build: 
       context: .
-      dockerfile: Dockerfile.test.postgres
+      dockerfile: Dockerfile.postgres
 
     image: sso-gateway-postgres-test
     container_name: sso-gateway-postgres-test
@@ -60,6 +60,5 @@ services:
       else
        ln -s /install/node_modules /usr/src/app;
       fi && 
-      npm run test-server-coverage &&
       npm run test-server-watch
       '

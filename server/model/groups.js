@@ -10,21 +10,23 @@ const pgp = pgpromise({
 
 const db = pgp(process.env.DATABASE_URL);
 
+
 /**
  * Retrieve all accounts from the system
  */
-export function getAllAccounts(callback) {
-  db.any('SELECT * FROM accounts')
+export function getAllServices(callback) {
+  db.any('SELECT * FROM services')
     .then(data => {
       callback(data);
     });
 }
 
 /**
- * Get a user with a specific accountId
+ * Get all services for a specific accountId
  */
-export function getAccount(id, callback) {
-  db.one('SELECT * FROM accounts WHERE id = $1', id)
+export function getServicesForGroup(groupName, callback) {
+
+  db.any('SELECT p.service_name FROM permissions p INNER JOIN services s ON s.name = p.service_name WHERE p.group_name = $1', groupName)
     .then(data => {
       callback(null, data);
     })
