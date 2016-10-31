@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 // mandatory auth middleware
-// router.use(authorize);
+router.use(authorize);
 
 /**
  * @swagger

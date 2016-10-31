@@ -18,26 +18,25 @@ function validate(email, password) {
       ],
     };
   }
-
   return accountInfo;
 }
 
-function validateEmail(email) {
-  let accountInfo = null;
+// function validateEmail(email) {
+//   let accountInfo = null;
 
-  if (email === 'John@crfhealth.com') {
-    accountInfo = { // spoofing a userobject from the DB§
-      email: 'John@crfhealth.com',
-      role: 'CS',
-      services: [
-        { name: 'Localization Tool' },
-        { name: 'PRS' },
-        { name: 'Reports' },
-      ],
-    };
-  }
-  return accountInfo;
-}
+//   if (email === 'John@crfhealth.com') {
+//     accountInfo = { // spoofing a userobject from the DB§
+//       email: 'John@crfhealth.com',
+//       role: 'CS',
+//       services: [
+//         { name: 'Localization Tool' },
+//         { name: 'PRS' },
+//         { name: 'Reports' },
+//       ],
+//     };
+//   }
+//   return accountInfo;
+// }
 
 /**
  * authenticate the user
@@ -62,14 +61,13 @@ export function authenticate(request, response) { // typical middleware signatur
       .json(texts.CREDENTIALS_INVALID);
     return;
   }
-  else {
-    // If authentication is success, we will generate a token
-    // and dispatch it to the client
-    response.status(httpStatusCodes.CREATED);
-    const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.sessionTimeout });
-    response.setHeader('token', token);
-    response.json({ success: true, msg: 'Successful created token.' });
-  }
+
+  // If authentication is success, we will generate a token
+  // and dispatch it to the client
+  response.status(httpStatusCodes.CREATED);
+  const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.sessionTimeout });
+  response.setHeader('token', token);
+  response.json({ success: true, msg: 'Successful created token.' });
 }
 
 export function authorize(request, response, next) {
@@ -77,40 +75,15 @@ export function authorize(request, response, next) {
     return next(); // skip for auth request
   }
 
-  const token = request.header.token;
-  console.log("header");
-  console.log(request);
-  if (!token) {
-    console.log('invalid header');
-    response
-      .status(httpStatusCodes.SERVICE_FORBIDDEN)
-      .json(texts.JWT_NOT_VALID);
+  // token's verification: decrypt the token and check it's expire date
+  let decodedToken = {};
+  try {
+    decodedToken = jwt.verify(request.headers.token, config.jwtSecretKey);
+  } catch (error) {
+    response.status(httpStatusCodes.SERVICE_FORBIDDEN).json(texts.JWT_NOT_VALID);
     return;
   }
 
-  // token's verification: decrypt the token and check it's expire date
-  jwt.verify(token, config.jwtSecretKey, (err, decoded) => {
-    if (err) {
-       console.log('Error...');
-       console.log(err);
-
-      // verify throws 2 types of error only
-      if (err.name === 'TokenExpiredError') {
-        response
-          .status(httpStatusCodes.HTTP_STATUS_SERVICE_FORBIDDEN)
-          .json(texts.JWT_EXPIRED);
-        return;
-      } else {
-        response
-          .status(httpStatusCodes.HTTP_STATUS_SERVICE_FORBIDDEN)
-          .json(texts.JWT_MALFORMED);
-        return;
-      }
-    }
-
-    console.log(decoded);
-
-    // Authorized. Proceed
-    next();
-  });
+  // Authorized. Proceed
+  next();
 }

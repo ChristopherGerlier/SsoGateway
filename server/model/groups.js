@@ -10,7 +10,6 @@ const pgp = pgpromise({
 
 const db = pgp(process.env.DATABASE_URL);
 
-
 /**
  * Retrieve all accounts from the system
  */
