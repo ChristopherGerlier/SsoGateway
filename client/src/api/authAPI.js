@@ -6,13 +6,16 @@ import axios from 'axios';
   Uses successCallback and failCallback to notify caller about the results
 */
 export default function authenticate(userCredentials, successCallback) {
-  console.log(`authenticating ${userCredentials.username}`);
-  axios.get('localhost:7000/api/users/1')
-   .then((response) => {
-     successCallback(response);
-   });
-  //  .catch((err) => {
-  //    failCallback(err);
-  //  });
+  axios.post('http://192.168.99.100:49160/api/v1/authenticate', {
+    username: userCredentials.username,
+    email: userCredentials.email,
+    password: userCredentials.password,
+  })
+  .then((response) => {
+    successCallback(response);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 }
 

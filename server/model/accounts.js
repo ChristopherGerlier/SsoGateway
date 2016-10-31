@@ -1,14 +1,8 @@
 /* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 /* eslint-disable max-len*/
-
-import promise from 'bluebird';
-import pgpromise from 'pg-promise';
-
-const pgp = pgpromise({
-  promiseLib: promise,
-});
-
-const db = pgp(process.env.DATABASE_URL);
+import {
+  db,
+} from '../util/databaseHelper.js';
 
 /**
  * Retrieve all accounts from the system
