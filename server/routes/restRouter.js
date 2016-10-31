@@ -2,13 +2,13 @@
 import express from 'express';
 import * as accounts from '../controllers/accounts.js';
 import * as groups from '../controllers/groups.js';
-import { authenticate, validateRequest } from '../middlewares/auth.js';
+import { authenticate, authorize } from '../middlewares/auth.js';
 
 const router = express.Router();
 
 
 // mandatory auth middleware
-// router.use(validateRequest);
+// router.use(authorize);
 
 /**
  * @swagger

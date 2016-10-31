@@ -47,8 +47,9 @@ export function authenticate(request, response) { // typical middleware signatur
   const password = request.body.password;
 
   if (!email || !password) {
-    response.status(httpStatusCodes.SERVICE_UNAUTHORIZED);
-    response.json(texts.CREDENTIALS_REQUIRED);
+    response
+      .status(httpStatusCodes.SERVICE_UNAUTHORIZED)
+      .json(texts.CREDENTIALS_REQUIRED);
     return;
   }
 
@@ -56,8 +57,9 @@ export function authenticate(request, response) { // typical middleware signatur
   const payload = validate(email, password);
 
   if (!payload) { // If authentication fails, we send a 401 back
-    response.status(httpStatusCodes.SERVICE_UNAUTHORIZED);
-    response.json(texts.CREDENTIALS_INVALID);
+    response
+      .status(httpStatusCodes.SERVICE_UNAUTHORIZED)
+      .json(texts.CREDENTIALS_INVALID);
     return;
   }
   else {
@@ -71,23 +73,44 @@ export function authenticate(request, response) { // typical middleware signatur
 }
 
 export function authorize(request, response, next) {
-  if (request.url === '/authenticate') return next(); // skip for auth request
+  if (request.url === '/authenticate') {
+    return next(); // skip for auth request
+  }
 
   const token = request.header.token;
+  console.log("header");
+  console.log(request);
+  if (!token) {
+    console.log('invalid header');
+    response
+      .status(httpStatusCodes.SERVICE_FORBIDDEN)
+      .json(texts.JWT_NOT_VALID);
+    return;
+  }
 
   // token's verification: decrypt the token and check it's expire date
   jwt.verify(token, config.jwtSecretKey, (err, decoded) => {
     if (err) {
+       console.log('Error...');
+       console.log(err);
+
       // verify throws 2 types of error only
       if (err.name === 'TokenExpiredError') {
-        response.status(httpStatusCodes.HTTP_STATUS_SERVICE_FORBIDDEN).end(texts.JWT_EXPIRED);
+        response
+          .status(httpStatusCodes.HTTP_STATUS_SERVICE_FORBIDDEN)
+          .json(texts.JWT_EXPIRED);
+        return;
       } else {
-        response.status(httpStatusCodes.HTTP_STATUS_SERVICE_FORBIDDEN).end(texts.JWT_MALFORMED);
+        response
+          .status(httpStatusCodes.HTTP_STATUS_SERVICE_FORBIDDEN)
+          .json(texts.JWT_MALFORMED);
+        return;
       }
-
-      console.log(decoded);
-      // Authorized. Proceed
-      next();
     }
+
+    console.log(decoded);
+
+    // Authorized. Proceed
+    next();
   });
 }
