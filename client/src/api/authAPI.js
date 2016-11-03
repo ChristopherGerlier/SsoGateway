@@ -7,7 +7,7 @@ import axios from 'axios';
 */
 export default function authenticate(userCredentials, successCallback, failCallBack) {
 //  console.log('posting to http://localhost:7000/api/v1/authenticate');
-  axios.post('http://localhost:7000/api/v1/authenticate', {
+  axios.post('/api/v1/authenticate', {
     username: userCredentials.username,
     email: userCredentials.email,
     password: userCredentials.password,

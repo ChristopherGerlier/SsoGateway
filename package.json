@@ -10,12 +10,10 @@
   },
   "scripts": {
     "build": "webpack --color -p --display-error-details --config internals/webpack/prod.config.js",
-    "dev": "concurrently --kill-others \"npm run watch-client\" \"npm run start-dev\"",
-    "watch-client": "webpack-dev-server --colors --display-error-details --config internals/webpack/dev.config.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./server/bin/www.js --port 7000 -L",
     "prestart": "babel ./server --out-dir build/",
     "prod": "npm start",
     "start": "cross-env NODE_ENV=production node ./build/bin/www.js --port 7050",
-    "start-dev": "cross-env NODE_ENV=development nodemon --exec babel-node ./server/bin/www.js --port 7000 -L",
     "lint": "eslint ./client/src ./client/tests --ext .js --ext .jsx --ignore-pattern dist --cache",
     "test-client": "mocha --compilers js:babel-core/register --require babel-polyfill --require ignore-styles --require ./client/test/test_setup.js \"./client/**/*@(test.js|test.jsx)\"",
     "test-client-watch": "npm run test-client -- --watch --watch-extensions jsx",
@@ -51,6 +49,7 @@
     "react-redux": "^4.4.5",
     "react-router": "^2.6.1",
     "redux": "^3.6.0",
+    "redux-thunk": "2.1.0",
     "reselect": "^2.5.3",
     "serve-favicon": "2.3.0",
     "swagger-jsdoc": "1.7.0",
@@ -74,7 +73,6 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "clean-webpack-plugin": "^0.1.10",
-    "concurrently": "^2.2.0",
     "css-loader": "^0.23.1",
     "deep-freeze": "0.0.1",
     "eslint-config-airbnb": "^10.0.0",
@@ -86,7 +84,6 @@
     "file-loader": "0.9.0",
     "html-webpack-plugin": "^2.22.0",
     "html-webpack-template": "^5.0.0",
-    "http-proxy": "1.15.1",
     "image-webpack-loader": "2.0.0",
     "mocha": "^3.0.2",
     "node-sass": "^3.8.0",
@@ -97,7 +94,8 @@
     "sass-loader": "^4.0.1",
     "style-loader": "^0.13.1",
     "webpack": "1.13.2",
-    "webpack-dev-server": "1.16.2",
+    "webpack-dev-middleware": "1.8.4",
+    "webpack-hot-middleware": "2.13.1",
     "webpack-validator": "^2.2.7"
   }
 }

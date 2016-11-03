@@ -8,14 +8,20 @@ import morgan from 'morgan';
 import path from 'path';
 import cors from 'cors';
 import config from 'config';
-import httpProxy from 'http-proxy';
 import favicon from 'serve-favicon';
+
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 import swaggerJSDoc from 'swagger-jsdoc';
+
 import swaggerDefinition from '../internals/swaggerDefinition.js';
 
 import {
   winstonLogger,
 } from './logger';
+
+const devConfig = require('../internals/webpack/dev.config.js');
 
 const RESTAPI_PREFIX = '/api/v1/';
 
@@ -24,7 +30,6 @@ const restRouter = require('./routes/restRouter.js');
 
 // Express initializes app to be a function
 // handler that you can supply to an HTTP server
-const proxy = httpProxy.createProxyServer();
 const app = express();
 
 // initialize swagger-jsdoc
@@ -63,7 +68,7 @@ app.use(cors({ exposedHeaders: 'token', origin: config.server.corsAllowOrigins }
 // returns a middleware that only parses json
 app.use(bodyParser.json());
 
-// Forces the use of node's native query parser module: QueryString
+// Forces the use of node's native query parser module: QueryString. Allow to access body variables
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compression());
 
@@ -75,15 +80,15 @@ app.get('/api-docs.json', (request, response) => {
   response.send(swaggerSpec);
 });
 
-// Forward all other request to frontend react router
-app.use('/', (req, res) => {
-  if (process.env.NODE_ENV === 'production') {
-    res.sendFile(path.resolve(outputPath, 'index.html'));
-  } else {
-    proxy.web(req, res, {
-      target: 'http://localhost:8080',
-    });
-  }
+if (process.env.NODE_ENV === 'development') {
+  const compiler = webpack(devConfig);
+  const middleware = webpackDevMiddleware(compiler, { noInfo: true });
+  app.use(middleware);
+  app.use(webpackHotMiddleware(compiler));
+}
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(outputPath, 'index.html'));
 });
 
 // If no routes can be mapped then use the following middleware

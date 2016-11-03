@@ -3,6 +3,8 @@
 export const APP_NAME = 'WEBSTUDIO';
 export const BACKEND_NOT_OPERATIONAL =
 'Backend server is not operational at the moment. Please try again later.';
+export const TOKEN_NOT_VALID =
+'Token could not be verified with the provided key.';
 
 // Texts for dashboard
 export const DASHBOARD_ADD_LANGUAGE = 'Add language';

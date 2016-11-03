@@ -2,13 +2,12 @@
 import React, { Component } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { Router } from 'react-router';
+import { browserHistory } from 'react-router';
 import AlertMessage from '../../Components/AlertMessage';
 
 import styles from './LoginPage.scss';
 import * as texts from '../../constants/applicationTexts.js';
 import authenticate from '../../api/authAPI.js';
-
 
 class LoginPage extends Component {
 
@@ -18,7 +17,10 @@ class LoginPage extends Component {
 
     // since handleLogin will be called from another context, bind event handler
     this.handleLogin = this.handleLogin.bind(this);
-    this.state = { alertVisible: false };
+    this.state = {
+      alertVisible: false,
+      alertMessage: '',
+    };
   }
 
   handleLogin(event) {
@@ -34,6 +36,7 @@ class LoginPage extends Component {
       // convert xml to json and save values to the store
       this.setState({ alertVisible: false });
       console.log(response);
+      browserHistory.push('/Home');
     };
 
     const failCallback = (err) => {
@@ -43,10 +46,11 @@ class LoginPage extends Component {
       } else { // node.js is not answering
         errorMessage = texts.BACKEND_NOT_OPERATIONAL;
       }
-      console.log('OH noooo!!!!');
       console.log(errorMessage);
-      this.setState({ alertVisible: true });
-      Router.browserHistory.push('/Home');
+      this.setState({
+        alertVisible: true,
+        alertMessage: errorMessage,
+      });
     };
 
     // send auth request to backend
@@ -56,7 +60,7 @@ class LoginPage extends Component {
   render() {
     let alert;
     if (this.state.alertVisible) {
-      alert = <AlertMessage message="Incorrect username or password." />;
+      alert = <AlertMessage message={this.state.alertMessage} />;
     }
 
     return (
@@ -65,7 +69,7 @@ class LoginPage extends Component {
           <Col className={styles['front-bg']} md={12}>
             <div className={styles['login-form']} >
               <Col md={7}>
-                <h2><strong>{texts.LOGIN_WELCOME_TITLE}</strong></h2>
+                <h2>ds<strong>{texts.LOGIN_WELCOME_TITLE}</strong></h2>
                 <p>{texts.LOGIN_WELCOME_MESSAGE}</p>
               </Col>
               <Col md={5}>

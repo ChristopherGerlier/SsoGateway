@@ -37,7 +37,7 @@ const Menu = ({ title }) =>
 // Specifies the default values for props:
 Menu.defaultProps = {
   title: '<Missing title>',
-  items: [{ name: 'What is xWebStudio ?', url: '/Home' }],
+  items: [{ name: 'What is WebStudio ?', url: '/Home' }],
 };
 
 Menu.propTypes = {

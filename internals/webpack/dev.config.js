@@ -6,6 +6,7 @@ const path = require('path');
 const validate = require('webpack-validator');
 const webpack = require('webpack');
 
+const hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
 const PATHS = {
   client: path.join(__dirname, '../../client/src'),
   build: path.join(__dirname, '../../build'),
@@ -24,8 +25,8 @@ const config = {
     // Entry accepts a path or an object of entries.
     // We'll be using the latter form given it's
     // convenient with more complex configurations.
-    client: PATHS.client,
-    style: PATHS.style,
+    client: [PATHS.client, hotMiddlewareScript],
+    style: [PATHS.style, hotMiddlewareScript],
   },
   output: {
     // compile the bundles in the builds directory
@@ -36,10 +37,6 @@ const config = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
   },
-  // Watching doesn't work too well on Docker Toolbox for Windows. Adding polling'
-//  watchOptions: {
-//    poll: 1000,
-//  },
   module: {
     preLoaders: [{
       test: /\.(js|jsx)$/,
@@ -82,31 +79,6 @@ const config = {
     ],
   },
   progress: true,
-  devServer: {
-    // Enable history API fallback so HTML5 History API based
-    // routing works. This is a good default that will come
-    // in handy in more complicated setups.
-    historyApiFallback: true,
-
-    // Unlike the cli flag, this doesn't set
-    // HotModuleReplacementPlugin!
-    hot: true,
-    inline: true,
-
-    // Display only errors to reduce the amount of output.
-    stats: 'errors-only',
-
-    // Parse host and port from env to allow customization.
-    //
-    // If you use Vagrant or Cloud9, set
-    // host: options.host || '0.0.0.0';
-    //
-    // 0.0.0.0 is available to all network devices
-    // unlike default `localhost`.
-    host: process.env.HOST, // Defaults to `localhost`
-    port: process.env.PORT, // Defaults to 8080
-    // public: '192.168.99.100',
-  },
   plugins: [
     new HtmlWebpackPlugin({
       appMountId: 'app',

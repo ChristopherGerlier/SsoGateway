@@ -10,7 +10,7 @@
     host: 'localhost',
     port: 8080
   },
-  jwtSecretKey: 'super.secret.key',
+  jwtSecretKey: ']ZHFzH^5fk?&dD8s',
   jwtSessionTimeout: 1800,
   databaseURL: 'postgres://postgres:mysecretpassword@192.168.99.100:49162/postgres'
 }
