@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 // hashHistory manages the routing history with the hash portion of the url.
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 
 import HomePage from './containers/HomePage';
 import Layout from './containers/Layout';
@@ -25,5 +25,4 @@ const routes =
     <Route path="Home" component={HomePage} />
   </Route>);
 
-
-render(<Router history={hashHistory}>{routes}</Router>, app);
+render(<Router history={browserHistory}>{routes}</Router>, app);

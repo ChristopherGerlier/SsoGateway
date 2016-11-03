@@ -10,38 +10,19 @@
  * Module dependencies
  */
 import http from 'http';
-import minimist from 'minimist';
+import config from 'config';
 import { chalkLogger, winstonLogger } from '../logger.js';
 import server from '../server.js';
 
 const httpServer = http.Server(server);
-const argv = minimist(process.argv.slice(2));
-
-/**
- * Normalize a port into a number, string or false
- */
-function normalizePort(value) {
-  const portNumber = parseInt(value, 10);
-
-  if (isNaN(portNumber)) {
-    // named pipe
-    return value;
-  }
-
-  if (portNumber >= 0) {
-    // port number
-    return portNumber;
-  }
-
-  return false;
-}
 
 /**
  * Get port from environment and store in Express
  */
-const port = normalizePort(argv.port || process.env.PORT || 3000);
+const port = process.env.PORT || config.server.port;
+const host = process.env.HOST || config.server.host;
 server.set('port', port);
-server.set('host', 'localhost');
+server.set('host', host);
 
 /**
  * Event listener for HTTP server "error" event
@@ -83,5 +64,4 @@ httpServer.on('listening', () => {
   chalkLogger.appStarted(port);
   winstonLogger.level = 'debug';
   winstonLogger.info(`Listening on port ${port}!`);
-//  console.log(`Listening on port ${port}!`);
 });

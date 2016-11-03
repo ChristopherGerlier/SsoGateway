@@ -2,11 +2,11 @@
 import jwt from 'jsonwebtoken';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import config from 'config';
 
 import server from '../../server';
 import httpStatusCode from '../../constants/httpStatusCodes';
 import * as accounts from '../../model/accounts.js';
-import * as config from '../../config.js';
 
 import {
   runSql,
@@ -23,7 +23,7 @@ const payload = {
     { name: 'Localization Tool' },
   ],
 };
-const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.sessionTimeout });
+const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.jwtSessionTimeout });
 
 describe('GET /api/v1/accounts/', () => {
   before((done) => {

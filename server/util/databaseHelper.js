@@ -2,11 +2,14 @@
 import promise from 'bluebird';
 import pgpromise from 'pg-promise';
 import path from 'path';
+import config from 'config';
 
 const pgp = pgpromise({
   promiseLib: promise,
 });
-const db = pgp(process.env.DATABASE_URL);
+const databaseUrl = process.env.DATABASE_URL || config.databaseURL;
+
+const db = pgp(databaseUrl);
 
 // Helper for linking to external query files:
 function runSql(file, done) {

@@ -2,10 +2,10 @@
 import jwt from 'jsonwebtoken';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import config from 'config';
 
 import server from '../../server';
 import httpStatusCode from '../../constants/httpStatusCodes';
-import * as config from '../../config.js';
 import * as texts from '../../constants/applicationTexts.js';
 
 import {
@@ -64,7 +64,7 @@ describe('Authorized REST apis', () => {
       ],
     };
 
-    const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.sessionTimeout });
+    const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.jwtSessionTimeout });
 
     chai.request(server)
       .get('/api/v1/accounts')

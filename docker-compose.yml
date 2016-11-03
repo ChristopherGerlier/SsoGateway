@@ -19,6 +19,9 @@ services:
     environment:
     # alter the 'postgres' user to have a password
       - POSTGRES_PASSWORD=mysecretpassword
+    # ports:
+    #  - '49162:5432'
+
 
   sso-gateway:
     # builds from the docker file in the current directory

@@ -2,9 +2,13 @@
 import React, { Component } from 'react';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import { Grid, Row, Col } from 'react-bootstrap';
+import { Router } from 'react-router';
+import AlertMessage from '../../Components/AlertMessage';
+
 import styles from './LoginPage.scss';
 import * as texts from '../../constants/applicationTexts.js';
 import authenticate from '../../api/authAPI.js';
+
 
 class LoginPage extends Component {
 
@@ -14,15 +18,13 @@ class LoginPage extends Component {
 
     // since handleLogin will be called from another context, bind event handler
     this.handleLogin = this.handleLogin.bind(this);
+    this.state = { alertVisible: false };
   }
 
   handleLogin(event) {
     event.preventDefault();
 
-    console.log('handle loggtrghtrgin');
-
     const userCredentials = {
-      username: this.username.value,
       email: this.email.value,
       password: this.password.value,
     };
@@ -30,24 +32,33 @@ class LoginPage extends Component {
     // prepare callbacks
     const successCallback = (response) => {
       // convert xml to json and save values to the store
+      this.setState({ alertVisible: false });
       console.log(response);
     };
 
-    // const failCallback = (err) => {
-    //   let errorMessage = '';
-    //   if (err.response) { // node.js server responded with a status code != 200
-    //     errorMessage = err.response.data;
-    //   } else { // node.js is not answering
-    //     errorMessage = texts.BACKEND_NOT_OPERATIONAL;
-    //   }
-    //   console.log(errorMessage);
-    // };
+    const failCallback = (err) => {
+      let errorMessage = '';
+      if (err.response) { // node.js server responded with a status code != 200
+        errorMessage = err.response.data;
+      } else { // node.js is not answering
+        errorMessage = texts.BACKEND_NOT_OPERATIONAL;
+      }
+      console.log('OH noooo!!!!');
+      console.log(errorMessage);
+      this.setState({ alertVisible: true });
+      Router.browserHistory.push('/Home');
+    };
 
     // send auth request to backend
-    authenticate(userCredentials, successCallback);
+    authenticate(userCredentials, successCallback, failCallback);
   }
 
   render() {
+    let alert;
+    if (this.state.alertVisible) {
+      alert = <AlertMessage message="Incorrect username or password." />;
+    }
+
     return (
       <Grid fluid>
         <Row>
@@ -59,14 +70,6 @@ class LoginPage extends Component {
               </Col>
               <Col md={5}>
                 <form className="form-horizontal" onSubmit={this.handleLogin}>
-                  <div className="form-group">
-                    <input
-                      className="form-control"
-                      placeholder={texts.LOGIN_FORM_USERNAME}
-                      tabIndex="1"
-                      ref={input => { this.username = input; }}
-                    />
-                  </div>
                   <div className="form-group">
                     <input
                       type="email"
@@ -92,6 +95,7 @@ class LoginPage extends Component {
                       Sign in
                     </button>
                   </div>
+                  {alert}
                 </form>
               </Col>
             </div>

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import config from 'config';
 
-import * as config from '../config.js';
+// import * as config from '../config.js';
 import * as texts from '../constants/applicationTexts.js';
 import httpStatusCodes from '../constants/httpStatusCodes.js';
 
@@ -65,7 +66,7 @@ export function authenticate(request, response) { // typical middleware signatur
   // If authentication is success, we will generate a token
   // and dispatch it to the client
   response.status(httpStatusCodes.CREATED);
-  const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.sessionTimeout });
+  const token = jwt.sign(payload, config.jwtSecretKey, { expiresIn: config.jwtSessionTimeout });
   response.setHeader('token', token);
   response.json({ success: true, msg: 'Successful created token.' });
 }

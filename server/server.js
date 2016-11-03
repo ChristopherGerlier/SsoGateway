@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import path from 'path';
 import cors from 'cors';
+import config from 'config';
 import httpProxy from 'http-proxy';
 import favicon from 'serve-favicon';
 import swaggerJSDoc from 'swagger-jsdoc';
@@ -57,7 +58,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(favicon(path.join(__dirname, '../public', 'images', 'favicon.ico')));
 
 // cross domain calls support
-app.use(cors({ exposedHeaders: 'token', origin: ['http://localhost:8080', 'http://localhost:7000'] }));
+app.use(cors({ exposedHeaders: 'token', origin: config.server.corsAllowOrigins }));
 
 // returns a middleware that only parses json
 app.use(bodyParser.json());
