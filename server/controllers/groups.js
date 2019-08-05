@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 import * as model from '../model/groups.js';
 import httpStatusCodes from '../constants/httpStatusCodes.js';
 
@@ -11,7 +10,6 @@ export function getServicesForGroup(request, response, next) { // typical middle
       // When you pass an Error() to next, Express.js will not jump to
       // the next route or middleware, but will instead jump to processng what is
       // know as error middleware
-      console.log('Error' + error);
       return next(error);
     }
     // Makes since of the json and turns it into a string

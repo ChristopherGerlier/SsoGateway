@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 /* eslint-disable max-len*/
 import {
   db,

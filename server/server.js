@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 /* eslint-disable import/no-extraneous-dependencies*/
 import express from 'express';
 import compression from 'compression';

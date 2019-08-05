@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 // https://docs.stormpath.com/rest/product-guide/latest/reference.html#account
 /**
  * Retrieving resources

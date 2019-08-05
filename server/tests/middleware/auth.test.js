@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 import jwt from 'jsonwebtoken';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
@@ -56,7 +55,7 @@ describe('Authorized REST apis', () => {
 
   it('should allow authorization if valid token is provided', done => {
     const payload = {
-      email: 'John@crfhealth.com',
+      email: 'John@hotmail.com',
       role: 'CS',
       services: [
         { name: 'Report' },
@@ -86,7 +85,7 @@ describe('POST /api/v1/authenticate', () => {
     chai.request(server)
       .post('/api/v1/authenticate')
       .send({
-        email: 'John@crfhealth.com',
+        email: 'John@hotmail.com',
         password: 'John',
       })
       .end((error, response) => {
@@ -98,7 +97,7 @@ describe('POST /api/v1/authenticate', () => {
           const payload = jwt.verify(response.header.token, config.jwtSecretKey);
           payload.should.be.a('object');
           payload.should.have.property('email');
-          payload.email.should.equal('John@crfhealth.com');
+          payload.email.should.equal('John@hotmail.com');
           payload.should.have.property('role');
           payload.role.should.equal('CS');
           payload.should.have.property('services');
@@ -115,7 +114,7 @@ describe('POST /api/v1/authenticate', () => {
     chai.request(server)
       .post('/api/v1/authenticate')
       .send({
-        email: 'John@crfhealth.com',
+        email: 'John@hotmail.com',
         password: 'Alex',
       })
       .end((error, response) => {
@@ -142,7 +141,7 @@ describe('POST /api/v1/authenticate', () => {
     chai.request(server)
       .post('/api/v1/authenticate')
       .send({
-        email: 'John@crfhealth.com',
+        email: 'John@hotmail.com',
       })
       .end((error, response) => {
         response.should.have.status(httpStatusCode.SERVICE_UNAUTHORIZED);

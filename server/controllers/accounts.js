@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 import * as model from '../model/accounts.js';
 import httpStatusCodes from '../constants/httpStatusCodes.js';
 

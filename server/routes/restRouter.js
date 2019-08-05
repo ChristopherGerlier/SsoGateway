@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 import express from 'express';
 import * as accounts from '../controllers/accounts.js';
 import * as groups from '../controllers/groups.js';

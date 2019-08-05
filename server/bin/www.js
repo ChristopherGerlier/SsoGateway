@@ -1,5 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
-
 // The bin directory serve as a location where one can define
 // the various startup script.. The www is one.
 // Having bin/www is a convention from the Express community.

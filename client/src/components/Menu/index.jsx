@@ -1,4 +1,3 @@
-/* eslint-disable new-cap*/
 import React, { PropTypes } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Link } from 'react-router';
@@ -38,6 +37,7 @@ const Menu = ({ title }) =>
 Menu.defaultProps = {
   title: '<Missing title>',
   items: [{ name: 'What is WebStudio ?', url: '/Home' }],
+  isAuthenticated: false,
 };
 
 Menu.propTypes = {
@@ -46,6 +46,7 @@ Menu.propTypes = {
     name: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
   })).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default Menu;

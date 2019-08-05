@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+// import { Provider } from 'react-redux';
 
 // hashHistory manages the routing history with the hash portion of the url.
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
@@ -7,6 +8,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import HomePage from './containers/HomePage';
 import Layout from './containers/Layout';
 import LoginPage from './containers/LoginPage';
+// import store from './store';
 
 require('./index.scss');
 
@@ -25,4 +27,9 @@ const routes =
     <Route path="Home" component={HomePage} />
   </Route>);
 
-render(<Router history={browserHistory}>{routes}</Router>, app);
+render(
+//  <Provider store={store}>
+  <Router history={browserHistory}>{routes}</Router>
+//  </Provider>
+, app
+);

@@ -6,11 +6,11 @@ CREATE TABLE accounts (
 );
 
 INSERT INTO accounts (username, password, email)
-  VALUES ('Mike', 'Mike', 'mike@crfhealth.com');
+  VALUES ('Mike', 'Mike', 'mike@hotmail.com');
 INSERT INTO accounts (username, password, email)
-  VALUES ('Rob', 'Rob', 'rob@crfhealth.com');
+  VALUES ('Rob', 'Rob', 'rob@hotmail.com');
 INSERT INTO accounts (username, password, email)
-  VALUES ('John', 'John', 'John@crfhealth.com');
+  VALUES ('John', 'John', 'John@hotmail.com');
 
 CREATE TABLE services (
   id SERIAL PRIMARY KEY,

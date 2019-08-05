@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 import promise from 'bluebird';
 import pgpromise from 'pg-promise';
 import path from 'path';

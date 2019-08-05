@@ -1,4 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 import jwt from 'jsonwebtoken';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
@@ -16,7 +15,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 
 const payload = {
-  email: 'John@crfhealth.com',
+  email: 'John@hotmail.com',
   role: 'CS',
   services: [
     { name: 'Report' },
@@ -47,7 +46,7 @@ describe('GET /api/v1/accounts/', () => {
           response.body[0].should.have.property('username');
           response.body[0].username.should.equal('John');
           response.body[0].should.have.property('email');
-          response.body[0].email.should.equal('John@crfhealth.com');
+          response.body[0].email.should.equal('John@hotmail.com');
           response.body[0].should.have.property('password');
           response.body[0].password.should.equal('John');
           response.body[0].should.have.property('group_name');
@@ -71,7 +70,7 @@ describe('GET /api/v1/accounts/:uid', () => {
 
   it('should return a single account', done => {
     accounts.getAllAccounts((data) => {
-      const account = data.find((item) => item.email === 'Rob@crfhealth.com');
+      const account = data.find((item) => item.email === 'Rob@hotmail.com');
 
       chai.request(server)
         .get(`/api/v1/accounts/${account.id}`)
@@ -86,7 +85,7 @@ describe('GET /api/v1/accounts/:uid', () => {
             response.body.should.have.property('password');
             response.body.password.should.equal('Rob');
             response.body.should.have.property('email');
-            response.body.email.should.equal('Rob@crfhealth.com');
+            response.body.email.should.equal('Rob@hotmail.com');
             response.body.should.have.property('group_name');
             response.body.group_name.should.equal('CS');
             done();
@@ -123,7 +122,7 @@ describe('GET /api/v1/groups/:groupname/services', () => {
 
   it('should return a list of services for a given account', done => {
     accounts.getAllAccounts((data) => {
-      const account = data.find((item) => item.email === 'Rob@crfhealth.com');
+      const account = data.find((item) => item.email === 'Rob@hotmail.com');
 
       chai.request(server)
         .get(`/api/v1/groups/${account.group_name}/services`)

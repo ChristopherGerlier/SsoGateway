@@ -1,5 +1,3 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
-
 export const APP_NAME = 'WEBSTUDIO';
 export const BACKEND_NOT_OPERATIONAL =
 'Backend server is not operational at the moment. Please try again later.';

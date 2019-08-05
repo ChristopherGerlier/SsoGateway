@@ -8,9 +8,9 @@ import httpStatusCodes from '../constants/httpStatusCodes.js';
 function validate(email, password) {
   let accountInfo = null;
 
-  if (email === 'John@crfhealth.com' && password === 'John') {
+  if (email === 'John@hotmail.com' && password === 'John') {
     accountInfo = { // spoofing a userobject from the DB§
-      email: 'John@crfhealth.com',
+      email: 'John@hotmail.com',
       role: 'CS',
       services: [
         { name: 'Localization Tool' },
@@ -25,9 +25,9 @@ function validate(email, password) {
 // function validateEmail(email) {
 //   let accountInfo = null;
 
-//   if (email === 'John@crfhealth.com') {
+//   if (email === 'John@hotmail.com') {
 //     accountInfo = { // spoofing a userobject from the DB§
-//       email: 'John@crfhealth.com',
+//       email: 'John@hotmail.com',
 //       role: 'CS',
 //       services: [
 //         { name: 'Localization Tool' },

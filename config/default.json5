@@ -1,10 +1,9 @@
-/* Company Confidential, Copyright (c) 2016 CRF Box, Ltd. All Rights Reserved. */
 {
   server: {
     host: 'localhost',
     port: 7000,
     corsAllowOrigins: ['http://localhost:8080', 'http://localhost:7000'],
-    restCallTimeout: 30000 
+    restCallTimeout: 30000
   },
   client: {
     host: 'localhost',
